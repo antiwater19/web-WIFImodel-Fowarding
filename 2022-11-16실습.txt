@@ -1,0 +1,127 @@
+//실습2022-11-16
+
+/*#include <stdio.h>
+#include <windows.h>
+
+
+#pragma warning(disable : 4996)
+
+int main(void) {
+
+    FILE* fp = NULL; //FILE 은 구조체이다.
+
+    fp = fopen("sample.txt", "w");
+
+    if (fp == NULL) {
+        printf("파일 열기 실패\n");
+    }
+    else {
+        printf("파일 열기 성공\n");
+    }
+
+    fclose(fp);
+    return 0;
+}*/
+
+/*#include <stdio.h>
+#pragma warning(disable : 4996)
+
+int main(void) {
+    FILE* fp = NULL;
+
+    fp = fopen("test.txt", "w");
+    if (fp == NULL) {
+        printf("파일 입력 실패\n");
+    }
+    else {
+        printf("파일 입력 성공\n");
+    }
+
+    fputc('a', fp);
+    fputc('b', fp);
+    fputc('x', fp);
+    //fgets('bx', 100, fp);
+
+    fclose(fp);
+    return 0;
+}*/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable : 4996)
+
+int main(void) {
+
+    FILE* fp;
+    char fname[100]; //= { '\0' };
+    int number, count = 0;
+    char name[20];
+    float score, total = 0.0;
+
+    printf("성적 파일 이름을 입력하시오: ");
+    scanf("%s", fname);
+
+    //성적 파일을 쓰기 모드로 연다.
+    if ((fp == fopen(fname, "w")) == NULL) {
+        fprintf(stderr, "성적 파일 %s을 열 수 없습니다.\n", fname);
+        exit(1);
+    }
+    //사용자로부터 학번, 이름, 성적을 입력받아서 파일에 저장한다.
+    while (1)
+    {
+        printf("학번, 이름, 성적을 입력하시오:(음수면 종료)");
+        scanf_s("%d", &number);
+        if (number < 0) { break; }
+        else {
+            scanf("%s %f", name, &score);
+            fprintf(fp, "%d %s %f", number, name, score);
+        }   
+    }
+    fclose(fp);
+    //성적 파일을 읽기모드로 연다.
+    if ((fp = fopen(fname, "r")) == NULL) {
+        fprintf(stderr, "성적 파일 %s을 열 수 없습니다.\n", fname);
+        exit(1);
+    }
+    //파일에서 성적을 읽어서 평균을 구한다.
+    while (!feof(fp)) {
+        fscanf(fp, "%d %s %f", &number, name, &score);
+        total += score;
+        count++;
+    }
+    printf("평균 = %f\n", total / count);
+    fclose(fp);
+    return 0;
+    
+}
+
+/*#include <stdio.h>
+#include <string.h>
+int main(void)
+{
+    FILE* fp;
+    char fname[128];
+    char buffer[256];
+    char word[256];
+    int line_num = 0;
+    printf("입력 파일 이름을 입력하시오: ");
+    scanf("%s", fname);
+    printf("탐색할 단어를 입력하시오: ");
+    scanf("%s", word);
+
+    // 파일을 읽기 모드로 연다.
+    if ((fp = fopen(fname, "r")) == NULL)
+    {
+        fprintf(stderr, "파일 %s을 열 수 없습니다.\n", fname);
+        exit(1);
+    }
+    while (fgets(buffer, 256, fp)) {
+        line_num++;
+        if (strstr(buffer, word)) {
+            printf("%s: %d 단어 %s이 발견되었습니다.\n", fname, line_num, word);
+        }
+    }
+    fclose(fp);
+    return 0;
+}*/
